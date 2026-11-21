@@ -41,8 +41,8 @@ function App(){
  const [checkoutError,setCheckoutError]=useState('');
  const categories=['All','Fertilizers','Crop Care','Organic'];
  const productsShown=catalog.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.subtitle}`.toLowerCase().includes(query.toLowerCase())));
- async function login(e){e.preventDefault();setError('');try{const r=await fetch('http://localhost:4000/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,mobile})});const d=await r.json();if(!r.ok)throw Error(d.message);localStorage.setItem('jf_token',d.token);localStorage.setItem('jf_user',JSON.stringify(d.user));setToken(d.token);setUser(d.user)}catch(err){setError(err.message||'Could not connect to server. Is it running?')}}
- function logout(){localStorage.removeItem('jf_token');localStorage.removeItem('jf_user');setToken('');setUser(null);setCart([])}
+ async function login(e){e.preventDefault();setError('');try{const r=await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,mobile})});const d=await r.json();if(!r.ok)throw Error(d.message);localStorage.setItem('jf_token',d.token);localStorage.setItem('jf_user',JSON.stringify(d.user));setToken(d.token);setUser(d.user)}catch(err){setError(err.message||'Could not connect to server. Is it running?')}}
+function logout(){localStorage.removeItem('jf_token');localStorage.removeItem('jf_user');setToken('');setUser(null);setCart([])}
  function add(p){setCart(c=>[...c,p]);setToast(`${p.name} added to your basket`);setTimeout(()=>setToast(''),2200)}
  function remove(id){setCart(c=>{const i=c.findIndex(p=>p.id===id);if(i<0)return c;return c.filter((_,j)=>j!==i)})}
  function cartQuantity(id){return cart.filter(p=>p.id===id).length}
